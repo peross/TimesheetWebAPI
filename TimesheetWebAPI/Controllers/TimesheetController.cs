@@ -85,5 +85,28 @@ namespace TimesheetWebAPI.Controllers
             }
         }
 
+        public string Delete(int id)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                string query = @"delete from tblTimesheet where TitleId=" + id;
+                using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["TimesheetDb"].ConnectionString))
+                using (var cmd = new SqlCommand(query, con))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    da.Fill(dt);
+                }
+
+                return "Deleted Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }
