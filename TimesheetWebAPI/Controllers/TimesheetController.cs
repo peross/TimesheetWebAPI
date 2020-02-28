@@ -28,5 +28,35 @@ namespace TimesheetWebAPI.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, dt);
         }
+
+        public string Post(Timesheet ts)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                string query = @"insert into tblTimesheet (TitleName, Hours, Date) 
+                                Values
+                                (
+                                 '" + ts.TitleName + @"' 
+                                  ,'" + ts.Hours + @"'
+                                  ,'" + ts.Date + @"'
+                                )";
+                using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["TimesheetDb"].ConnectionString))
+                using (var cmd = new SqlCommand(query, con))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    da.Fill(dt);
+                }
+
+                return "Added Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }
