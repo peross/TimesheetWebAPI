@@ -58,5 +58,32 @@ namespace TimesheetWebAPI.Controllers
             }
         }
 
+        public string Put(Timesheet ts)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                string query = @"update tblTimesheet set 
+                                TitleName='" + ts.TitleName + @"'
+                                ,Hours='" + ts.Hours + @"'
+                                ,Date='" + ts.Date + @"'
+                                where TitleId=" +ts.TitleId +@"";
+                using (var con = new SqlConnection(ConfigurationManager.ConnectionStrings["TimesheetDb"].ConnectionString))
+                using (var cmd = new SqlCommand(query, con))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    da.Fill(dt);
+                }
+
+                return "Updated Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }
