@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace TimesheetWebAPI
 {
@@ -19,6 +21,11 @@ namespace TimesheetWebAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //force API to send JSON response
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(
+                new MediaTypeHeaderValue("text/html"));
+
         }
     }
 }
